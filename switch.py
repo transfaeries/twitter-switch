@@ -7,15 +7,21 @@ import asyncio
 pk = pluralkit.Client(os.environ['PK_TOKEN'])
 logging.basicConfig(level=logging.INFO)
 
-async def main():
+class Switcher:
+    def __init__(self) -> None:
+        pass
 
-    system = await pk.get_system()
-    logging.info(system.description)
+    async def main():
 
-    members = pk.get_members()
-    async for member in members:
-        logging.info(f"{member.name} (`{member.id}`)")
+        time,front = await pk.get_fronters()
+        if front is None:
+            front = "no one"
+        logging.info(f"{time}: {front} is in front to start with")
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
+        members = pk.get_members()
+        async for member in members:
+            logging.info(f"{member.name} (`{member.id}`)")
+
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(main())
 
